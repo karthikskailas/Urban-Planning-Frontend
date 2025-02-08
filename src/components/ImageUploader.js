@@ -1,12 +1,11 @@
 import React, { useState } from "react"
 import axios from "axios"
 import ReactMarkdown from "react-markdown"
-import remarkGfm from "remark-gfm" // Supports tables & advanced markdown features
 
 const ImageUploader = () => {
 	const [image, setImage] = useState(null)
 	const [uploadStatus, setUploadStatus] = useState("")
-	const [expansionPlan, setExpansionPlan] = useState(null)
+	const [expansionPlan, setExpansionPlan] = useState("")
 
 	const handleImageUpload = async (event) => {
 		const file = event.target.files[0]
@@ -14,7 +13,6 @@ const ImageUploader = () => {
 			const reader = new FileReader()
 			reader.onload = (e) => setImage(e.target.result)
 
-			// Create a FormData object and append the file
 			const formData = new FormData()
 			formData.append("map_image", file)
 
@@ -32,7 +30,7 @@ const ImageUploader = () => {
 
 				if (response.data) {
 					setUploadStatus("Processing Complete!")
-					setExpansionPlan(response.data.markdown_plan) // Fetch markdown formatted response
+					setExpansionPlan(response.data.urban_expansion_plan)
 				} else {
 					setUploadStatus("Failed to process image.")
 				}
@@ -66,14 +64,7 @@ const ImageUploader = () => {
 					maxWidth: "500px",
 					textAlign: "center",
 				}}>
-				<h2
-					style={{
-						fontSize: "24px",
-						fontWeight: "bold",
-						marginBottom: "16px",
-					}}>
-					Upload and Process Map
-				</h2>
+				<h2>Upload City Map for Urban Planning</h2>
 
 				<input
 					type='file'
@@ -82,9 +73,8 @@ const ImageUploader = () => {
 					style={{
 						display: "block",
 						width: "100%",
-						fontSize: "14px",
 						padding: "10px",
-						margin: "10px -10px",
+						margin: "10px 0",
 						borderRadius: "8px",
 						border: "1px solid #ccc",
 					}}
@@ -92,14 +82,7 @@ const ImageUploader = () => {
 
 				{image && (
 					<div style={{ marginTop: "20px" }}>
-						<h3
-							style={{
-								fontSize: "18px",
-								fontWeight: "500",
-								marginBottom: "10px",
-							}}>
-							Uploaded Map:
-						</h3>
+						<h3>Uploaded Map:</h3>
 						<img
 							src={image}
 							alt='Uploaded'
@@ -108,16 +91,7 @@ const ImageUploader = () => {
 					</div>
 				)}
 
-				{uploadStatus && (
-					<p
-						style={{
-							marginTop: "16px",
-							fontSize: "14px",
-							color: "#555",
-						}}>
-						{uploadStatus}
-					</p>
-				)}
+				{uploadStatus && <p>{uploadStatus}</p>}
 
 				{expansionPlan && (
 					<div
@@ -129,18 +103,8 @@ const ImageUploader = () => {
 							boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
 							textAlign: "left",
 						}}>
-						<h3
-							style={{
-								fontSize: "20px",
-								fontWeight: "bold",
-								marginBottom: "10px",
-								textAlign: "center",
-							}}>
-							AI-Generated Expansion Plan
-						</h3>
-						<ReactMarkdown remarkPlugins={[remarkGfm]}>
-							{expansionPlan}
-						</ReactMarkdown>
+						<h3>AI-Generated Urban Expansion Plan</h3>
+						<ReactMarkdown>{expansionPlan}</ReactMarkdown>
 					</div>
 				)}
 			</div>
